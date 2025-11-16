@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Holaa</title>
+<title>Landing Animasi Chart</title>
 <style>
     :root{--bg:#07070a;--muted:#999}
     html,body{height:100%;margin:0}
@@ -227,3 +227,38 @@ function tickUpdate(){
   });
   
   chart2.data.datasets[0].data = random
+  // new random data for all datasets
+  chart1.data.datasets.forEach((dataset) => {
+    dataset.data = randomData();
+    dataset.borderColor = createGradient(ctx1, ['#00ffe1','#00a8ff','#8a00ff']);
+  });
+  
+  // Update chart2 dataset as well
+  chart2.data.datasets[0].data = randomData();
+
+  // Perform update with animation for chart1 and chart2
+  chart1.update('none');
+  chart2.update('none');
+
+  // Subtle redraw animation using requestAnimationFrame for smoothness
+  let t = 0;
+  const duration = 600;
+  function animate(){
+    t+=16; // approx frame
+    chart1.options.animation = {duration:400, easing:'easeOutCubic'};
+    chart2.options.animation = {duration:400, easing:'easeOutCubic'};
+    chart1.update();
+    chart2.update();
+    if(t < duration) requestAnimationFrame(animate);
+  }
+  requestAnimationFrame(animate);
+}
+
+// Periodic update to refresh the charts every 2.5 seconds
+const intervalId = setInterval(tickUpdate, 2500);
+
+// Initial animate in with delay to start the first animation
+setTimeout(()=>{ tickUpdate(); }, 600);
+</script>
+</body>
+</html>
