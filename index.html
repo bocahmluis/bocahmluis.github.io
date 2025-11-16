@@ -105,7 +105,11 @@ function resizeAll(){
   fitCanvasToDisplaySize(c1);
   fitCanvasToDisplaySize(c2);
 }
-window.addEventListener('resize', ()=>{ resizeAll(); if(chart1) chart1.resize(); if(chart2) chart2.resize(); });
+window.addEventListener('resize', ()=>{ 
+    resizeAll(); 
+    if(chart1) chart1.resize(); 
+    if(chart2) chart2.resize(); 
+});
 resizeAll();
 
 // Create gradient strokes for nice neon look
@@ -118,83 +122,23 @@ function createGradient(ctx, colors){
 
 const labels = Array.from({length:20}, (_,i)=> i+1);
 
-// Create multiple datasets for 5 lines
+// Chart 1 (5 garis)
 const chart1 = new Chart(ctx1, {
   type: 'line',
   data: {
     labels,
     datasets: [
-      {
-        label: 'Saham A',
-        data: randomData(),
-        borderWidth: 3,
-        borderColor: createGradient(ctx1, ['#00ffe1','#00a8ff','#8a00ff']),
-        pointRadius: 0,
-        tension: 0.4,
-        fill: {
-          target: 'origin',
-          above: 'rgba(0,255,200,0.06)'
-        }
-      },
-      {
-        label: 'Saham B',
-        data: randomData(),
-        borderWidth: 3,
-        borderColor: createGradient(ctx1, ['#ff4b4b','#ff7f50','#ffcc00']),
-        pointRadius: 0,
-        tension: 0.4,
-        fill: {
-          target: 'origin',
-          above: 'rgba(255,75,75,0.06)'
-        }
-      },
-      {
-        label: 'Saham C',
-        data: randomData(),
-        borderWidth: 3,
-        borderColor: createGradient(ctx1, ['#ff1493','#c71585','#ff6347']),
-        pointRadius: 0,
-        tension: 0.4,
-        fill: {
-          target: 'origin',
-          above: 'rgba(255,20,147,0.06)'
-        }
-      },
-      {
-        label: 'Saham D',
-        data: randomData(),
-        borderWidth: 3,
-        borderColor: createGradient(ctx1, ['#32cd32','#8b4513','#a0522d']),
-        pointRadius: 0,
-        tension: 0.4,
-        fill: {
-          target: 'origin',
-          above: 'rgba(50,205,50,0.06)'
-        }
-      },
-      {
-        label: 'Saham E',
-        data: randomData(),
-        borderWidth: 3,
-        borderColor: createGradient(ctx1, ['#4b0082','#9400d3','#8a2be2']),
-        pointRadius: 0,
-        tension: 0.4,
-        fill: {
-          target: 'origin',
-          above: 'rgba(75,0,130,0.06)'
-        }
-      }
+      { label:'Merkurius', data:randomData(), borderWidth:3, borderColor:createGradient(ctx1,['#00ffe1','#00a8ff','#8a00ff']), pointRadius:0, tension:0.4, fill:{target:'origin', above:'rgba(0,255,200,0.06)'} },
+      { label:'Bumi', data:randomData(), borderWidth:3, borderColor:createGradient(ctx1,['#ff4b4b','#ff7f50','#ffcc00']), pointRadius:0, tension:0.4, fill:{target:'origin', above:'rgba(255,75,75,0.06)'} },
+      { label:'Pluto', data:randomData(), borderWidth:3, borderColor:createGradient(ctx1,['#ff1493','#c71585','#ff6347']), pointRadius:0, tension:0.4, fill:{target:'origin', above:'rgba(255,20,147,0.06)'} },
+      { label:'Saturnus', data:randomData(), borderWidth:3, borderColor:createGradient(ctx1,['#32cd32','#8b4513','#a0522d']), pointRadius:0, tension:0.4, fill:{target:'origin', above:'rgba(50,205,50,0.06)'} },
+      { label:'Mars', data:randomData(), borderWidth:3, borderColor:createGradient(ctx1,['#4b0082','#9400d3','#8a2be2']), pointRadius:0, tension:0.4, fill:{target:'origin', above:'rgba(75,0,130,0.06)'} }
     ]
   },
-  options: {
-    animation: false,
-    responsive: false,
-    maintainAspectRatio: false,
-    scales: { x: { display:false }, y: { display:false } },
-    plugins: { legend:{ display:true } }
-  }
+  options:{ animation:false, responsive:false, maintainAspectRatio:false, scales:{x:{display:false}, y:{display:false}}, plugins:{legend:{display:true}} }
 });
 
+// Chart 2 (bar)
 const chart2 = new Chart(ctx2, {
   type: 'bar',
   data: {
@@ -202,63 +146,61 @@ const chart2 = new Chart(ctx2, {
     datasets: [{
       label: 'Analisis 2',
       data: randomData(),
-      borderWidth: 0,
       backgroundColor: function(context){
         const c = context.chart.ctx;
         return createGradient(c, ['rgba(255,80,180,0.9)','rgba(255,160,100,0.7)']);
       }
     }]
   },
-  options: {
-    animation: false,
-    responsive: false,
-    maintainAspectRatio: false,
-    scales: { x: { display:false }, y: { display:false } },
-    plugins: { legend:{ display:false } }
-  }
+  options:{ animation:false, responsive:false, maintainAspectRatio:false, scales:{x:{display:false}, y:{display:false}}, plugins:{legend:{display:false}} }
 });
 
-// Update function - replaces data and animates subtle properties
+// --- ✔ SINGLE clean update function ---
 function tickUpdate(){
-  // new random data for all datasets
-  chart1.data.datasets.forEach((dataset) => {
-    dataset.data = randomData();
-    dataset.borderColor = createGradient(ctx1, ['#00ffe1','#00a8ff','#8a00ff']);
+
+  const lineGradients = [
+    ['#00ffe1','#00a8ff','#8a00ff'],
+    ['#ff4b4b','#ff7f50','#ffcc00'],
+    ['#ff1493','#c71585','#ff6347'],
+    ['#32cd32','#8b4513','#a0522d'],
+    ['#4b0082','#9400d3','#8a2be2']
+  ];
+
+  // Update data untuk 5 line
+  chart1.data.datasets.forEach((ds,i)=>{
+    ds.data = randomData();
+    ds.borderColor = createGradient(ctx1, lineGradients[i]);
   });
-  
-  chart2.data.datasets[0].data = random
-  // new random data for all datasets
-  chart1.data.datasets.forEach((dataset) => {
-    dataset.data = randomData();
-    dataset.borderColor = createGradient(ctx1, ['#00ffe1','#00a8ff','#8a00ff']);
-  });
-  
-  // Update chart2 dataset as well
+
+  // Update bar
   chart2.data.datasets[0].data = randomData();
 
-  // Perform update with animation for chart1 and chart2
+  // non-animated update first (prevent glitch)
   chart1.update('none');
   chart2.update('none');
 
-  // Subtle redraw animation using requestAnimationFrame for smoothness
+  // smooth animation
   let t = 0;
   const duration = 600;
-  function animate(){
-    t+=16; // approx frame
-    chart1.options.animation = {duration:400, easing:'easeOutCubic'};
-    chart2.options.animation = {duration:400, easing:'easeOutCubic'};
+
+  function anim(){
+    t+=16;
+    chart1.options.animation = {duration:400,easing:'easeOutCubic'};
+    chart2.options.animation = {duration:400,easing:'easeOutCubic'};
     chart1.update();
     chart2.update();
-    if(t < duration) requestAnimationFrame(animate);
+    if(t < duration) requestAnimationFrame(anim);
   }
-  requestAnimationFrame(animate);
+
+  requestAnimationFrame(anim);
 }
 
-// Periodic update to refresh the charts every 2.5 seconds
-const intervalId = setInterval(tickUpdate, 2500);
+// periodic refresh
+setInterval(tickUpdate, 2500);
 
-// Initial animate in with delay to start the first animation
-setTimeout(()=>{ tickUpdate(); }, 600);
+// first run
+setTimeout(tickUpdate, 600);
 </script>
+
 </body>
 </html>
