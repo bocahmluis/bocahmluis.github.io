@@ -1,137 +1,225 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bocahmluis - Portofolio Tukang Ketik</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bocahmluis — Parallax Cyber Humor</title>
 
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700;800&display=swap" rel="stylesheet">
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: "Poppins", sans-serif;
-        }
+<style>
+/* GLOBAL -------------------------------------- */
+* {
+    margin:0; padding:0; box-sizing:border-box;
+    font-family:"Poppins", sans-serif;
+}
+html, body {
+    height:100%;
+    overflow-x:hidden;
+}
+body {
+    background:#0d0d0d;
+    color:#fff;
+    transition:background 0.4s, color 0.4s;
+}
 
-        body {
-            background: #0d0d0d;
-            color: #fff;
-            overflow-x: hidden;
-        }
+/* LIGHT MODE ---------------------------------- */
+body.light {
+    background:#f6f6f6;
+    color:#222;
+}
 
-        header {
-            padding: 30px;
-            text-align: center;
-        }
+/* PARALLAX BACKGROUND -------------------------- */
+.parallax {
+    position:fixed;
+    width:100%;
+    height:100%;
+    top:0; left:0;
+    background:url('https://i.imgur.com/Zm0Kq0C.jpeg');
+    background-size:cover;
+    background-attachment:fixed;
+    opacity:0.15;
+    z-index:-1;
+}
 
-        h1 {
-            font-size: 3rem;
-            font-weight: 800;
-            background: linear-gradient(45deg, #ff0080, #ffcd00, #00eaff);
-            -webkit-background-clip: text;
-            color: transparent;
-            animation: glow 3s ease-in-out infinite alternate;
-        }
+/* CYBER GRID ---------------------------------- */
+.grid {
+    position:fixed;
+    width:100%;
+    height:100%;
+    top:0; left:0;
+    background-image:
+        linear-gradient(#0ff3 1px, transparent 1px),
+        linear-gradient(90deg, #f0f3 1px, transparent 1px);
+    background-size:60px 60px;
+    opacity:0.1;
+    z-index:-1;
+}
 
-        @keyframes glow {
-            0% { text-shadow: 0 0 10px #ff0080; }
-            100% { text-shadow: 0 0 25px #00eaff; }
-        }
+/* HEADER --------------------------------------- */
+header {
+    text-align:center;
+    padding:70px 20px 30px;
+}
+h1 {
+    font-size:3.2rem;
+    font-weight:800;
+    background:linear-gradient(45deg,#ff00f7,#00d0ff,#00ff6e);
+    -webkit-background-clip:text;
+    color:transparent;
+    text-shadow:0 0 20px #0ff;
+    animation:titleGlow 3s ease-in-out infinite alternate;
+}
+@keyframes titleGlow {
+    0% { text-shadow:0 0 10px #ff00f7; }
+    100% { text-shadow:0 0 35px #00ff6e; }
+}
+.subtitle {
+    opacity:0.8;
+    margin-top:10px;
+    font-size:1.2rem;
+}
 
-        .subtitle {
-            font-size: 1.2rem;
-            opacity: 0.7;
-            margin-top: 10px;
-        }
+/* AVATAR --------------------------------------- */
+.avatar {
+    width:140px;
+    height:140px;
+    border-radius:50%;
+    margin:20px auto;
+    display:block;
+    border:4px solid #00eaff;
+    box-shadow:0 0 25px #00eaffaa;
+}
 
-        .container {
-            margin: 60px auto;
-            max-width: 800px;
-            padding: 20px;
-            text-align: center;
-            animation: fadeIn 1.5s ease;
-        }
+/* CARDS ---------------------------------------- */
+.container {
+    max-width:850px;
+    margin:auto;
+    padding:20px;
+}
+.card {
+    background:#111;
+    padding:30px;
+    margin:25px 0;
+    border-radius:18px;
+    border:2px solid #00eaff55;
+    box-shadow:0 0 20px #00eaff22;
+    transition:0.3s;
+}
+body.light .card {
+    background:#fff;
+    border-color:#3332;
+    box-shadow:0 0 10px #0002;
+}
+.card:hover {
+    transform:translateY(-6px);
+    box-shadow:0 0 30px #0ff4;
+}
+.card h2 { 
+    color:#00eaff; 
+    margin-bottom:10px;
+}
+body.light .card h2 { 
+    color:#0077aa; 
+}
+.funny {
+    margin-top:12px;
+    color:#ffcd00;
+    font-size:1rem;
+}
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
+/* MODE SWITCH ---------------------------------- */
+.mode-toggle {
+    position:fixed;
+    top:20px; right:20px;
+    background:#00eaff;
+    border:none;
+    color:#000;
+    font-weight:700;
+    padding:10px 18px;
+    border-radius:30px;
+    cursor:pointer;
+    box-shadow:0 0 15px #00eaffaa;
+    transition:0.3s;
+}
+.mode-toggle:hover {
+    transform:scale(1.05);
+}
 
-        .card {
-            background: #1a1a1a;
-            padding: 30px;
-            margin-top: 30px;
-            border-radius: 20px;
-            box-shadow: 0 0 15px rgba(255,255,255,0.05);
-            transition: 0.3s;
-        }
+/* MEME STYLE IMAGE ------------------------------ */
+.meme {
+    width:100%;
+    border-radius:15px;
+    margin-top:15px;
+}
 
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 0 25px rgba(255,255,255,0.1);
-        }
+/* FOOTER ---------------------------------------- */
+footer {
+    text-align:center;
+    padding:40px;
+    opacity:0.5;
+}
 
-        .funny {
-            font-size: 1.1rem;
-            color: #ffcd00;
-            margin-top: 15px;
-        }
-
-        footer {
-            text-align: center;
-            padding: 30px;
-            margin-top: 50px;
-            opacity: 0.5;
-        }
-    </style>
+</style>
 </head>
 <body>
 
-    <header>
-        <h1>Portofolio Tukang Ketik</h1>
-        <p class="subtitle">Saya tidak jago apa-apa, tapi lumayan jago pura-pura sibuk.</p>
-    </header>
+<button class="mode-toggle" onclick="toggleMode()">☀ / 🌙</button>
 
-    <div class="container">
+<div class="parallax"></div>
+<div class="grid"></div>
 
-        <div class="card">
-            <h2>Apa yang saya lakukan?</h2>
-            <p>
-                Mengetik…  
-                Ya, itu saja. Kadang hasilnya bagus, kadang tidak.  
-                Tapi yang penting **percaya diri**.
-            </p>
-            <p class="funny">"Kalau salah? Ya sudah, namanya juga manusia."</p>
-        </div>
+<header>
+    <img src="https://i.pinimg.com/736x/d6/16/cb/d616cbfbd7cbd523229f8437a763a6ff.jpg" class="avatar" alt="avatar kartun">
+    <h1>Portofolio Tukang Ketik</h1>
+    <p class="subtitle">Tidak ahli apa-apa, tapi semangat sok sibuk selalu ada.</p>
+</header>
 
-        <div class="card">
-            <h2>Kenapa situs ini dibuat?</h2>
-            <p>
-                Biar kelihatan niat padahal ya…  
-                cuma buat gaya-gayaan saja.
-            </p>
-            <p class="funny">"Yang penting aesthetic, skill belakangan."</p>
-        </div>
+<div class="container">
 
-        <div class="card">
-            <h2>Koleksi Ketikan</h2>
-            <p>
-                • Ketikan random  
-                • Ketikan sok serius  
-                • Ketikan mendadak bijak  
-                • Ketikan yang bahkan saya sendiri nggak ngerti
-            </p>
-            <p class="funny">"Semua orisinil, tidak ada yang disponsori kopi."</p>
-        </div>
-
+    <div class="card">
+        <h2>📌 Apa yang Saya Lakukan?</h2>
+        <p>
+            Ya… mengetik.  
+            Kadang jadi karya, kadang jadi kekacauan, kadang jadi “loh kok error?”.  
+            Intinya: **yang penting mencoba**.
+        </p>
+        <p class="funny">"Kalau gagal? Ya tinggal pura-pura berhasil."</p>
     </div>
 
-    <footer>
-        © 2025 — Dibuat dengan jari yang lelah tapi penuh semangat.
-    </footer>
+    <div class="card">
+        <h2>🌈 Kenapa Web Ini Ada?</h2>
+        <p>
+            Karena hidup harus punya portfolio…  
+            minimal satu, walau isinya penuh kejujuran yang meragukan.
+        </p>
+        <img class="meme" src="https://i.imgflip.com/9fbkza.jpg" alt="meme lucu">
+        <p class="funny">"Biar keliatan profesional, padahal cuma HTML sama gaya-gayaan."</p>
+    </div>
+
+    <div class="card">
+        <h2>🤡 Koleksi Kegiatan Heboh</h2>
+        <p>
+            • Mengetik tanpa melihat keyboard  
+            • Mengetik sambil memikirkan hal random  
+            • Mengetik sambil mempertanyakan hidup  
+            • Mengetik tapi lupa tujuannya  
+        </p>
+        <p class="funny">"Skill meningkat 0.01% setiap kopi habis."</p>
+    </div>
+
+</div>
+
+<footer>
+    © 2025 — Dibuat sambil senyum-senyum sendiri.
+</footer>
+
+<script>
+/* DARK–LIGHT MODE TOGGLE ------------------------- */
+function toggleMode() {
+    document.body.classList.toggle('light');
+}
+</script>
 
 </body>
 </html>
