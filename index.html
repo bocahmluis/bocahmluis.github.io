@@ -1,225 +1,202 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bocahmluis — Parallax Cyber Humor</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700;800&display=swap" rel="stylesheet">
-
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Landing Animasi Chart</title>
 <style>
-/* GLOBAL -------------------------------------- */
-* {
-    margin:0; padding:0; box-sizing:border-box;
-    font-family:"Poppins", sans-serif;
-}
-html, body {
-    height:100%;
-    overflow-x:hidden;
-}
-body {
-    background:#0d0d0d;
-    color:#fff;
-    transition:background 0.4s, color 0.4s;
-}
+    :root{--bg:#07070a;--muted:#999}
+    html,body{height:100%;margin:0}
+    body{
+        margin: 0;
+        background: linear-gradient(135deg,#02020a,#0a0a0f 40%,#071226 100%);
+        overflow: hidden;
+        font-family: 'Poppins', sans-serif;
+        color: white;
+    }
+    /* centered animated text */
+    #text-anim {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        width: 90%;
+        text-align: center;
+        font-size: clamp(20px, 4vw, 48px);
+        font-weight: 800;
+        letter-spacing: 0.02em;
+        z-index: 30;
+        pointer-events: none;
+        mix-blend-mode: screen;
+        text-shadow: 0 8px 24px rgba(0,0,0,0.6), 0 0 40px rgba(0,255,200,0.06);
+        animation: breathe 3.5s ease-in-out infinite;
+    }
+    @keyframes breathe{
+        0%{transform: translate(-50%,-50%) scale(0.98); opacity:.6}
+        50%{transform: translate(-50%,-50%) scale(1.02); opacity:1}
+        100%{transform: translate(-50%,-50%) scale(0.98); opacity:.6}
+    }
 
-/* LIGHT MODE ---------------------------------- */
-body.light {
-    background:#f6f6f6;
-    color:#222;
-}
+    /* background canvases fill */
+    .chart-layer{
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+    }
+    /* place two canvases stacked */
+    #chart1 { z-index: 5; }
+    #chart2 { z-index: 3; filter: blur(2px) opacity(.9); }
 
-/* PARALLAX BACKGROUND -------------------------- */
-.parallax {
-    position:fixed;
-    width:100%;
-    height:100%;
-    top:0; left:0;
-    background:url('https://i.imgur.com/Zm0Kq0C.jpeg');
-    background-size:cover;
-    background-attachment:fixed;
-    opacity:0.15;
-    z-index:-1;
-}
+    /* subtle vignette */
+    .vignette{
+        position:absolute; inset:0; pointer-events:none; z-index:40;
+        background: radial-gradient(ellipse at center, rgba(255,255,255,0.02) 0%, rgba(0,0,0,0.6) 60%);
+    }
 
-/* CYBER GRID ---------------------------------- */
-.grid {
-    position:fixed;
-    width:100%;
-    height:100%;
-    top:0; left:0;
-    background-image:
-        linear-gradient(#0ff3 1px, transparent 1px),
-        linear-gradient(90deg, #f0f3 1px, transparent 1px);
-    background-size:60px 60px;
-    opacity:0.1;
-    z-index:-1;
-}
+    /* tiny overlay grid for cyber feel */
+    .grid {
+        position:absolute; inset:0; z-index:2; pointer-events:none; opacity:.05;
+        background-image: linear-gradient(0deg, rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+        background-size: 60px 60px;
+    }
 
-/* HEADER --------------------------------------- */
-header {
-    text-align:center;
-    padding:70px 20px 30px;
-}
-h1 {
-    font-size:3.2rem;
-    font-weight:800;
-    background:linear-gradient(45deg,#ff00f7,#00d0ff,#00ff6e);
-    -webkit-background-clip:text;
-    color:transparent;
-    text-shadow:0 0 20px #0ff;
-    animation:titleGlow 3s ease-in-out infinite alternate;
-}
-@keyframes titleGlow {
-    0% { text-shadow:0 0 10px #ff00f7; }
-    100% { text-shadow:0 0 35px #00ff6e; }
-}
-.subtitle {
-    opacity:0.8;
-    margin-top:10px;
-    font-size:1.2rem;
-}
-
-/* AVATAR --------------------------------------- */
-.avatar {
-    width:140px;
-    height:140px;
-    border-radius:50%;
-    margin:20px auto;
-    display:block;
-    border:4px solid #00eaff;
-    box-shadow:0 0 25px #00eaffaa;
-}
-
-/* CARDS ---------------------------------------- */
-.container {
-    max-width:850px;
-    margin:auto;
-    padding:20px;
-}
-.card {
-    background:#111;
-    padding:30px;
-    margin:25px 0;
-    border-radius:18px;
-    border:2px solid #00eaff55;
-    box-shadow:0 0 20px #00eaff22;
-    transition:0.3s;
-}
-body.light .card {
-    background:#fff;
-    border-color:#3332;
-    box-shadow:0 0 10px #0002;
-}
-.card:hover {
-    transform:translateY(-6px);
-    box-shadow:0 0 30px #0ff4;
-}
-.card h2 { 
-    color:#00eaff; 
-    margin-bottom:10px;
-}
-body.light .card h2 { 
-    color:#0077aa; 
-}
-.funny {
-    margin-top:12px;
-    color:#ffcd00;
-    font-size:1rem;
-}
-
-/* MODE SWITCH ---------------------------------- */
-.mode-toggle {
-    position:fixed;
-    top:20px; right:20px;
-    background:#00eaff;
-    border:none;
-    color:#000;
-    font-weight:700;
-    padding:10px 18px;
-    border-radius:30px;
-    cursor:pointer;
-    box-shadow:0 0 15px #00eaffaa;
-    transition:0.3s;
-}
-.mode-toggle:hover {
-    transform:scale(1.05);
-}
-
-/* MEME STYLE IMAGE ------------------------------ */
-.meme {
-    width:100%;
-    border-radius:15px;
-    margin-top:15px;
-}
-
-/* FOOTER ---------------------------------------- */
-footer {
-    text-align:center;
-    padding:40px;
-    opacity:0.5;
-}
-
+    /* responsive safe area to keep text visible */
+    @media (max-width:600px){ #text-anim{font-size:18px; padding:0 10px} }
 </style>
 </head>
 <body>
 
-<button class="mode-toggle" onclick="toggleMode()">☀ / 🌙</button>
+<div id="text-anim">Saya doakan anda jadi orang yang bermanfaat</div>
 
-<div class="parallax"></div>
+<canvas id="chart1" class="chart-layer" aria-hidden="true"></canvas>
+<canvas id="chart2" class="chart-layer" aria-hidden="true"></canvas>
 <div class="grid"></div>
+<div class="vignette"></div>
 
-<header>
-    <img src="https://i.pinimg.com/736x/d6/16/cb/d616cbfbd7cbd523229f8437a763a6ff.jpg" class="avatar" alt="avatar kartun">
-    <h1>Portofolio Tukang Ketik</h1>
-    <p class="subtitle">Tidak ahli apa-apa, tapi semangat sok sibuk selalu ada.</p>
-</header>
-
-<div class="container">
-
-    <div class="card">
-        <h2>📌 Apa yang Saya Lakukan?</h2>
-        <p>
-            Ya… mengetik.  
-            Kadang jadi karya, kadang jadi kekacauan, kadang jadi “loh kok error?”.  
-            Intinya: **yang penting mencoba**.
-        </p>
-        <p class="funny">"Kalau gagal? Ya tinggal pura-pura berhasil."</p>
-    </div>
-
-    <div class="card">
-        <h2>🌈 Kenapa Web Ini Ada?</h2>
-        <p>
-            Karena hidup harus punya portfolio…  
-            minimal satu, walau isinya penuh kejujuran yang meragukan.
-        </p>
-        <img class="meme" src="https://i.imgflip.com/9fbkza.jpg" alt="meme lucu">
-        <p class="funny">"Biar keliatan profesional, padahal cuma HTML sama gaya-gayaan."</p>
-    </div>
-
-    <div class="card">
-        <h2>🤡 Koleksi Kegiatan Heboh</h2>
-        <p>
-            • Mengetik tanpa melihat keyboard  
-            • Mengetik sambil memikirkan hal random  
-            • Mengetik sambil mempertanyakan hidup  
-            • Mengetik tapi lupa tujuannya  
-        </p>
-        <p class="funny">"Skill meningkat 0.01% setiap detik."</p>
-    </div>
-
-</div>
-
-<footer>
-    © 2025 — .
-</footer>
-
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script>
-/* DARK–LIGHT MODE TOGGLE ------------------------- */
-function toggleMode() {
-    document.body.classList.toggle('light');
+// Ensure canvases match device pixel ratio for crisp rendering
+function fitCanvasToDisplaySize(canvas) {
+  const rect = canvas.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
+  const width = Math.round(rect.width * dpr);
+  const height = Math.round(rect.height * dpr);
+  if (canvas.width !== width || canvas.height !== height) {
+    canvas.width = width;
+    canvas.height = height;
+    return true;
+  }
+  return false;
 }
-</script>
 
+const c1 = document.getElementById('chart1');
+const c2 = document.getElementById('chart2');
+const ctx1 = c1.getContext('2d');
+const ctx2 = c2.getContext('2d');
+
+function randomData(n=20){
+  return Array.from({length:n}, ()=>Math.floor(Math.random()*100)+5);
+}
+
+// initial fit
+function resizeAll(){
+  fitCanvasToDisplaySize(c1);
+  fitCanvasToDisplaySize(c2);
+}
+window.addEventListener('resize', ()=>{ resizeAll(); if(chart1) chart1.resize(); if(chart2) chart2.resize(); });
+resizeAll();
+
+// Create gradient strokes for nice neon look
+function createGradient(ctx, colors){
+  const g = ctx.createLinearGradient(0,0,ctx.canvas.width,0);
+  const step = 1 / (colors.length - 1);
+  colors.forEach((c,i)=> g.addColorStop(i*step, c));
+  return g;
+}
+
+const labels = Array.from({length:20}, (_,i)=> i+1);
+
+const chart1 = new Chart(ctx1, {
+  type: 'line',
+  data: {
+    labels,
+    datasets: [{
+      label: 'Analisis 1',
+      data: randomData(),
+      borderWidth: 3,
+      borderColor: createGradient(ctx1, ['#00ffe1','#00a8ff','#8a00ff']),
+      pointRadius: 0,
+      tension: 0.4,
+      fill: {
+        target: 'origin',
+        above: 'rgba(0,255,200,0.06)'
+      }
+    }]
+  },
+  options: {
+    animation: false,
+    responsive: false,
+    maintainAspectRatio: false,
+    scales: { x: { display:false }, y: { display:false } },
+    plugins: { legend:{ display:false } }
+  }
+});
+
+const chart2 = new Chart(ctx2, {
+  type: 'bar',
+  data: {
+    labels,
+    datasets: [{
+      label: 'Analisis 2',
+      data: randomData(),
+      borderWidth: 0,
+      backgroundColor: function(context){
+        const c = context.chart.ctx;
+        return createGradient(c, ['rgba(255,80,180,0.9)','rgba(255,160,100,0.7)']);
+      }
+    }]
+  },
+  options: {
+    animation: false,
+    responsive: false,
+    maintainAspectRatio: false,
+    scales: { x: { display:false }, y: { display:false } },
+    plugins: { legend:{ display:false } }
+  }
+});
+
+// Update function - replaces data and animates subtle properties
+function tickUpdate(){
+  // new random data
+  chart1.data.datasets[0].data = randomData();
+  chart2.data.datasets[0].data = randomData();
+  // update gradients (in case of resize)
+  chart1.data.datasets[0].borderColor = createGradient(ctx1, ['#00ffe1','#00a8ff','#8a00ff']);
+  chart2.data.datasets[0].backgroundColor = createGradient(ctx2, ['rgba(255,80,180,0.9)','rgba(255,160,100,0.7)']);
+  // perform update with animation
+  chart1.update('none');
+  chart2.update('none');
+  // subtle redraw animation using requestAnimationFrame for smoothness
+  let t = 0;
+  const duration = 600;
+  function animate(){
+    t+=16; // approx frame
+    chart1.options.animation = {duration:400, easing:'easeOutCubic'};
+    chart2.options.animation = {duration:400, easing:'easeOutCubic'};
+    chart1.update();
+    chart2.update();
+    if(t < duration) requestAnimationFrame(animate);
+  }
+  requestAnimationFrame(animate);
+}
+
+// periodic update
+const intervalId = setInterval(tickUpdate, 2500);
+
+// initial animate in
+setTimeout(()=>{ tickUpdate(); }, 600);
+</script>
 </body>
 </html>
