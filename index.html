@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portofolio | Tukang Ketik</title>
+
+    <!-- TailwindCSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- GSAP Animation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #ff7eb3, #87cefa, #a8ff78);
+            background-size: 300% 300%;
+            animation: gradientMove 10s ease infinite;
+        }
+
+        @keyframes gradientMove {
+            0% {background-position: 0% 50%;}
+            50% {background-position: 100% 50%;}
+            100% {background-position: 0% 50%;}
+        }
+    </style>
+</head>
+
+<body class="text-white">
+
+    <!-- Navbar -->
+    <nav class="flex justify-between items-center p-5 px-8 backdrop-blur-md bg-white/10 rounded-b-xl shadow-xl">
+        <h1 class="text-2xl font-bold tracking-wide">Tukang Ketik</h1>
+        <div class="hidden md:flex gap-6 text-lg">
+            <a href="#about" class="hover:underline">Tentang</a>
+            <a href="#skills" class="hover:underline">Skill</a>
+            <a href="#projects" class="hover:underline">Projek</a>
+            <a href="#contact" class="hover:underline">Kontak</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="min-h-screen flex flex-col justify-center items-center text-center px-4">
+        <h1 class="text-5xl md:text-7xl font-extrabold drop-shadow-lg" id="heroTitle">
+            PORTOFOLIO
+        </h1>
+
+        <p class="text-2xl md:text-3xl mt-4 font-semibold tracking-wide" id="subTitle">
+            Tukang Ketik • Text Editor Specialist
+        </p>
+
+        <p class="max-w-xl mt-6 text-lg opacity-90">
+            Saya adalah Tukang Ketik profesional yang siap mengetik, menyusun,
+            memperbaiki, dan merapikan berbagai dokumen Anda dengan presisi tinggi,
+            kecepatan maksimal, dan kerapian ala editor handal.
+        </p>
+
+        <a href="#projects" class="mt-8 inline-block bg-white text-gray-800 px-8 py-3 rounded-xl shadow-xl font-bold hover:scale-105 transition">
+            Lihat Projek
+        </a>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="py-20 px-6 text-center bg-white/20 backdrop-blur-lg rounded-3xl mx-4 md:mx-20 shadow-xl">
+        <h2 class="text-4xl font-bold mb-4">Tentang Saya</h2>
+        <p class="max-w-2xl mx-auto text-lg">
+            Berpengalaman dalam pengetikan cepat, editing teks, perapian format,
+            penyusunan dokumen profesional, laporan, karya ilmiah, buku, modul, hingga konten digital.
+        </p>
+    </section>
+
+    <!-- Skills -->
+    <section id="skills" class="py-20 px-6 text-center">
+        <h2 class="text-4xl font-bold mb-10">Skill Utama</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+
+            <div class="p-6 bg-white/20 backdrop-blur-md rounded-2xl shadow-lg hover:scale-105 transition">
+                <h3 class="text-2xl font-bold mb-2">Pengetikan Cepat</h3>
+                <p>Kecepatan 80–120 WPM akurat dan rapi.</p>
+            </div>
+
+            <div class="p-6 bg-white/20 backdrop-blur-md rounded-2xl shadow-lg hover:scale-105 transition">
+                <h3 class="text-2xl font-bold mb-2">Editor Dokumen</h3>
+                <p>Merapikan struktur, grammar, dan format dokumen.</p>
+            </div>
+
+            <div class="p-6 bg-white/20 backdrop-blur-md rounded-2xl shadow-lg hover:scale-105 transition">
+                <h3 class="text-2xl font-bold mb-2">Layouting Text</h3>
+                <p>Pengaturan layout rapi dan profesional.</p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Projek -->
+    <section id="projects" class="py-20 px-6 bg-white/20 backdrop-blur-xl rounded-3xl mx-4 md:mx-20 shadow-xl">
+        <h2 class="text-4xl font-bold mb-10 text-center">Projek Terbaru</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="p-6 bg-white/30 rounded-xl shadow-lg hover:scale-105 transition">
+                <h3 class="text-2xl font-bold mb-2">Pengetikan Buku</h3>
+                <p>250 halaman selesai dalam 4 hari.</p>
+            </div>
+
+            <div class="p-6 bg-white/30 rounded-xl shadow-lg hover:scale-105 transition">
+                <h3 class="text-2xl font-bold mb-2">Editor Skripsi</h3>
+                <p>Pengecekan ejaan + layout bab lengkap.</p>
+            </div>
+
+            <div class="p-6 bg-white/30 rounded-xl shadow-lg hover:scale-105 transition">
+                <h3 class="text-2xl font-bold mb-2">Dokumen Bisnis</h3>
+                <p>Proposal, company profile, dan laporan.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Kontak -->
+    <section id="contact" class="py-20 text-center px-6">
+        <h2 class="text-4xl font-bold mb-4">Kontak</h2>
+        <p class="text-lg mb-6">Hubungi saya jika butuh jasa Tukang Ketik:</p>
+
+        <a href="mailto:email@domain.com"
+           class="bg-white text-gray-800 px-8 py-3 rounded-xl shadow-xl font-bold hover:scale-105 transition">
+            Kirim Email
+        </a>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-center py-10 opacity-80">
+        © 2025 Tukang Ketik – Portofolio
+    </footer>
+
+    <!-- Animasi GSAP -->
+    <script>
+        gsap.from("#heroTitle", { duration: 1.2, y: -80, opacity: 0, ease: "bounce" });
+        gsap.from("#subTitle", { duration: 1.2, delay: 0.3, y: 40, opacity: 0 });
+        gsap.from("nav", { duration: 1, opacity: 0, y: -30 });
+        gsap.from("section", { duration: 1, opacity: 0, stagger: 0.3 });
+    </script>
+
+</body>
+</html>
