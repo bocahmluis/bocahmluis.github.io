@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Landing Animasi Chart</title>
+<title>Bocahmliu</title>
 <style>
     :root{--bg:#07070a;--muted:#999}
     html,body{height:100%;margin:0}
@@ -63,7 +63,18 @@
     }
 
     /* responsive safe area to keep text visible */
-    @media (max-width:600px){ #text-anim{font-size:18px; padding:0 10px} }
+    @media (max-width: 600px) {
+    /* perkecil legend chart */
+    .chartjs-legend li span {
+        font-size: 10px !important;
+    }
+
+    #text-anim {
+        font-size: 16px;
+        padding: 0 15px;
+    }
+}
+
 </style>
 </head>
 <body>
@@ -77,42 +88,12 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script>
-// Ensure canvases match device pixel ratio for crisp rendering
-function fitCanvasToDisplaySize(canvas) {
-  const rect = canvas.getBoundingClientRect();
-  const dpr = window.devicePixelRatio || 1;
-  const width = Math.round(rect.width * dpr);
-  const height = Math.round(rect.height * dpr);
-  if (canvas.width !== width || canvas.height !== height) {
-    canvas.width = width;
-    canvas.height = height;
-    return true;
-  }
-  return false;
-}
-
 const c1 = document.getElementById('chart1');
 const c2 = document.getElementById('chart2');
 const ctx1 = c1.getContext('2d');
 const ctx2 = c2.getContext('2d');
 
-function randomData(n=20){
-  return Array.from({length:n}, ()=>Math.floor(Math.random()*100)+5);
-}
-
-// initial fit
-function resizeAll(){
-  fitCanvasToDisplaySize(c1);
-  fitCanvasToDisplaySize(c2);
-}
-window.addEventListener('resize', ()=>{ 
-    resizeAll(); 
-    if(chart1) chart1.resize(); 
-    if(chart2) chart2.resize(); 
-});
-resizeAll();
-
-// Create gradient strokes for nice neon look
+// gradient creator
 function createGradient(ctx, colors){
   const g = ctx.createLinearGradient(0,0,ctx.canvas.width,0);
   const step = 1 / (colors.length - 1);
@@ -120,25 +101,40 @@ function createGradient(ctx, colors){
   return g;
 }
 
+function randomData(n=20){
+  return Array.from({length:n}, ()=>Math.floor(Math.random()*100)+5);
+}
+
 const labels = Array.from({length:20}, (_,i)=> i+1);
 
-// Chart 1 (5 garis)
+// CHART 1 - fully responsive
 const chart1 = new Chart(ctx1, {
   type: 'line',
   data: {
     labels,
     datasets: [
-      { label:'Merkurius', data:randomData(), borderWidth:3, borderColor:createGradient(ctx1,['#00ffe1','#00a8ff','#8a00ff']), pointRadius:0, tension:0.4, fill:{target:'origin', above:'rgba(0,255,200,0.06)'} },
-      { label:'Bumi', data:randomData(), borderWidth:3, borderColor:createGradient(ctx1,['#ff4b4b','#ff7f50','#ffcc00']), pointRadius:0, tension:0.4, fill:{target:'origin', above:'rgba(255,75,75,0.06)'} },
-      { label:'Pluto', data:randomData(), borderWidth:3, borderColor:createGradient(ctx1,['#ff1493','#c71585','#ff6347']), pointRadius:0, tension:0.4, fill:{target:'origin', above:'rgba(255,20,147,0.06)'} },
-      { label:'Saturnus', data:randomData(), borderWidth:3, borderColor:createGradient(ctx1,['#32cd32','#8b4513','#a0522d']), pointRadius:0, tension:0.4, fill:{target:'origin', above:'rgba(50,205,50,0.06)'} },
-      { label:'Mars', data:randomData(), borderWidth:3, borderColor:createGradient(ctx1,['#4b0082','#9400d3','#8a2be2']), pointRadius:0, tension:0.4, fill:{target:'origin', above:'rgba(75,0,130,0.06)'} }
+      { label:'Merkurius', data:randomData(), borderWidth:3, pointRadius:0, tension:0.4 },
+      { label:'Bumi', data:randomData(), borderWidth:3, pointRadius:0, tension:0.4 },
+      { label:'Pluto', data:randomData(), borderWidth:3, pointRadius:0, tension:0.4 },
+      { label:'Saturnus', data:randomData(), borderWidth:3, pointRadius:0, tension:0.4 },
+      { label:'Mars', data:randomData(), borderWidth:3, pointRadius:0, tension:0.4 }
     ]
   },
-  options:{ animation:false, responsive:false, maintainAspectRatio:false, scales:{x:{display:false}, y:{display:false}}, plugins:{legend:{display:true}} }
+  options:{
+    responsive:true,
+    maintainAspectRatio:false,
+    scales:{x:{display:false}, y:{display:false}},
+    plugins:{
+      legend:{
+        display:true,
+        position:'top',
+        labels:{ color:"#fff" }
+      }
+    }
+  }
 });
 
-// Chart 2 (bar)
+// CHART 2 - responsive bar
 const chart2 = new Chart(ctx2, {
   type: 'bar',
   data: {
@@ -146,19 +142,20 @@ const chart2 = new Chart(ctx2, {
     datasets: [{
       label: 'Analisis 2',
       data: randomData(),
-      backgroundColor: function(context){
-        const c = context.chart.ctx;
-        return createGradient(c, ['rgba(255,80,180,0.9)','rgba(255,160,100,0.7)']);
-      }
+      backgroundColor:(ctx)=> createGradient(ctx.chart.ctx, ['rgba(255,80,180,0.9)','rgba(255,160,100,0.7)'])
     }]
   },
-  options:{ animation:false, responsive:false, maintainAspectRatio:false, scales:{x:{display:false}, y:{display:false}}, plugins:{legend:{display:false}} }
+  options:{
+    responsive:true,
+    maintainAspectRatio:false,
+    scales:{x:{display:false}, y:{display:false}},
+    plugins:{legend:{display:false}}
+  }
 });
 
-// --- ✔ SINGLE clean update function ---
+// UPDATE BERKALA
 function tickUpdate(){
-
-  const lineGradients = [
+  const lineGrads = [
     ['#00ffe1','#00a8ff','#8a00ff'],
     ['#ff4b4b','#ff7f50','#ffcc00'],
     ['#ff1493','#c71585','#ff6347'],
@@ -166,40 +163,20 @@ function tickUpdate(){
     ['#4b0082','#9400d3','#8a2be2']
   ];
 
-  // Update data untuk 5 line
   chart1.data.datasets.forEach((ds,i)=>{
     ds.data = randomData();
-    ds.borderColor = createGradient(ctx1, lineGradients[i]);
+    ds.borderColor = createGradient(ctx1, lineGrads[i]);
   });
 
-  // Update bar
   chart2.data.datasets[0].data = randomData();
 
-  // non-animated update first (prevent glitch)
-  chart1.update('none');
-  chart2.update('none');
-
-  // smooth animation
-  let t = 0;
-  const duration = 600;
-
-  function anim(){
-    t+=16;
-    chart1.options.animation = {duration:400,easing:'easeOutCubic'};
-    chart2.options.animation = {duration:400,easing:'easeOutCubic'};
-    chart1.update();
-    chart2.update();
-    if(t < duration) requestAnimationFrame(anim);
-  }
-
-  requestAnimationFrame(anim);
+  chart1.update();
+  chart2.update();
 }
 
-// periodic refresh
 setInterval(tickUpdate, 2500);
-
-// first run
 setTimeout(tickUpdate, 600);
+
 </script>
 
 </body>
