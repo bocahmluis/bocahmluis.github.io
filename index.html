@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Landing Animasi Chart</title>
+<title>Holaa</title>
 <style>
     :root{--bg:#07070a;--muted:#999}
     html,body{height:100%;margin:0}
@@ -118,29 +118,80 @@ function createGradient(ctx, colors){
 
 const labels = Array.from({length:20}, (_,i)=> i+1);
 
+// Create multiple datasets for 5 lines
 const chart1 = new Chart(ctx1, {
   type: 'line',
   data: {
     labels,
-    datasets: [{
-      label: 'Analisis 1',
-      data: randomData(),
-      borderWidth: 3,
-      borderColor: createGradient(ctx1, ['#00ffe1','#00a8ff','#8a00ff']),
-      pointRadius: 0,
-      tension: 0.4,
-      fill: {
-        target: 'origin',
-        above: 'rgba(0,255,200,0.06)'
+    datasets: [
+      {
+        label: 'Saham A',
+        data: randomData(),
+        borderWidth: 3,
+        borderColor: createGradient(ctx1, ['#00ffe1','#00a8ff','#8a00ff']),
+        pointRadius: 0,
+        tension: 0.4,
+        fill: {
+          target: 'origin',
+          above: 'rgba(0,255,200,0.06)'
+        }
+      },
+      {
+        label: 'Saham B',
+        data: randomData(),
+        borderWidth: 3,
+        borderColor: createGradient(ctx1, ['#ff4b4b','#ff7f50','#ffcc00']),
+        pointRadius: 0,
+        tension: 0.4,
+        fill: {
+          target: 'origin',
+          above: 'rgba(255,75,75,0.06)'
+        }
+      },
+      {
+        label: 'Saham C',
+        data: randomData(),
+        borderWidth: 3,
+        borderColor: createGradient(ctx1, ['#ff1493','#c71585','#ff6347']),
+        pointRadius: 0,
+        tension: 0.4,
+        fill: {
+          target: 'origin',
+          above: 'rgba(255,20,147,0.06)'
+        }
+      },
+      {
+        label: 'Saham D',
+        data: randomData(),
+        borderWidth: 3,
+        borderColor: createGradient(ctx1, ['#32cd32','#8b4513','#a0522d']),
+        pointRadius: 0,
+        tension: 0.4,
+        fill: {
+          target: 'origin',
+          above: 'rgba(50,205,50,0.06)'
+        }
+      },
+      {
+        label: 'Saham E',
+        data: randomData(),
+        borderWidth: 3,
+        borderColor: createGradient(ctx1, ['#4b0082','#9400d3','#8a2be2']),
+        pointRadius: 0,
+        tension: 0.4,
+        fill: {
+          target: 'origin',
+          above: 'rgba(75,0,130,0.06)'
+        }
       }
-    }]
+    ]
   },
   options: {
     animation: false,
     responsive: false,
     maintainAspectRatio: false,
     scales: { x: { display:false }, y: { display:false } },
-    plugins: { legend:{ display:false } }
+    plugins: { legend:{ display:true } }
   }
 });
 
@@ -169,34 +220,10 @@ const chart2 = new Chart(ctx2, {
 
 // Update function - replaces data and animates subtle properties
 function tickUpdate(){
-  // new random data
-  chart1.data.datasets[0].data = randomData();
-  chart2.data.datasets[0].data = randomData();
-  // update gradients (in case of resize)
-  chart1.data.datasets[0].borderColor = createGradient(ctx1, ['#00ffe1','#00a8ff','#8a00ff']);
-  chart2.data.datasets[0].backgroundColor = createGradient(ctx2, ['rgba(255,80,180,0.9)','rgba(255,160,100,0.7)']);
-  // perform update with animation
-  chart1.update('none');
-  chart2.update('none');
-  // subtle redraw animation using requestAnimationFrame for smoothness
-  let t = 0;
-  const duration = 600;
-  function animate(){
-    t+=16; // approx frame
-    chart1.options.animation = {duration:400, easing:'easeOutCubic'};
-    chart2.options.animation = {duration:400, easing:'easeOutCubic'};
-    chart1.update();
-    chart2.update();
-    if(t < duration) requestAnimationFrame(animate);
-  }
-  requestAnimationFrame(animate);
-}
-
-// periodic update
-const intervalId = setInterval(tickUpdate, 2500);
-
-// initial animate in
-setTimeout(()=>{ tickUpdate(); }, 600);
-</script>
-</body>
-</html>
+  // new random data for all datasets
+  chart1.data.datasets.forEach((dataset) => {
+    dataset.data = randomData();
+    dataset.borderColor = createGradient(ctx1, ['#00ffe1','#00a8ff','#8a00ff']);
+  });
+  
+  chart2.data.datasets[0].data = random
